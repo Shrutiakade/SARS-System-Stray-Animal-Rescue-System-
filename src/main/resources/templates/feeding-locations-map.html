@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feeding Locations Map</title>
+
+  <link rel="stylesheet" href="/leaflet.css" />
+  <script src="/leaflet.js"></script>
+</head>
+<body>
+<h2>Feeding Locations Map</h2>
+<div id="map" style="height: 500px;"></div>
+
+
+<script>
+  const map = L.map('map').setView([18.5204, 73.8567], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+  async function fetchLocations() {
+      try {
+          const response = await fetch('/feeding-locations');
+          const locations = await response.json();
+          console.log(locations);
+
+          if (Array.isArray(locations)) {
+              locations.forEach(loc => {
+                  console.log(loc); // Debugging - check if all locations are here
+                  if (loc.latitude && loc.longitude) {
+                      const marker = L.marker([loc.latitude, loc.longitude]).addTo(map);
+                      marker.bindPopup(`
+                          <strong>${loc.description}</strong><br>
+                          Address: ${loc.address || 'N/A'}<br>
+                          Last Fed: ${loc.lastFed || 'Not yet fed'}<br>
+                          Next Feeding: ${loc.nextFeedingSchedule || 'Not scheduled'}
+                      `);
+                  }
+              });
+          } else {
+              console.error("API did not return an array:", locations);
+          }
+      } catch (error) {
+          console.error('Error fetching locations:', error);
+      }
+  }
+
+  fetchLocations();
+</script>
+</body>
+</html>

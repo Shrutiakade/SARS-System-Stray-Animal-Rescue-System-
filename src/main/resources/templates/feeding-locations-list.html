@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Feeding Locations List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    .container {
+      background: #ffffff;
+      margin-top: 50px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      left: 0;
+      padding: 0 20px;
+    }
+
+    .nav-button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+    }
+
+    .nav-button.logout {
+      background: #ff4d4d;
+    }
+
+    .nav-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Heading */
+    h2 {
+      text-align: center;
+      color: #333;
+      font-size: 28px;
+    }
+
+    /* Locations List */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      margin-bottom: 15px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    li:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    strong {
+      color: #4CAF50;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #ddd;
+      margin: 15px 0;
+    }
+
+    /* Fade Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="nav-buttons">
+  <a href="/main-feeding-location" class="nav-button">⬅ Back</a>
+  <a href="/login" class="nav-button logout">🚪 Log Out</a>
+</div>
+
+<div class="container">
+  <h2>Feeding Locations</h2>
+  <ul>
+    <li th:each="location : ${locations}">
+      <strong>Address:</strong> <span th:text="${location.address}"></span><br>
+      <strong>Latitude:</strong><span th:text="${location.latitude}"></span><br>
+      <strong>Longitude:</strong><span th:text="${location.longitude}"></span><br>
+      <strong>Description:</strong> <span th:text="${location.description}"></span><br>
+     <strong>Last Fed:</strong> <span th:text="${location.lastFed}"></span><br>
+      <strong> Next Feeding Schedule:</strong> <span th:text="${location.nextFeedingSchedule}"></span><br>
+      <hr>
+    </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Feeding Locations List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            animation: fadeIn 1.2s ease-in;
+        }
+
+        .container {
+            background: #ffffff;
+            margin-top: 60px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 750px;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .nav-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+        }
+
+        .nav-button.logout { background: #ff4d4d; }
+        .nav-button:hover { transform: scale(1.05); }
+        .nav-button:active { transform: scale(0.98); }
+        .add-button { background: #007bff; display: block; margin: 20px auto; }
+
+        /* Feeding Locations List */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+            font-size: 14px;
+            color: #444;
+        }
+
+        .buttons {
+            margin-top: 10px;
+        }
+
+        .edit, .delete {
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .edit { background: #ffcc00; color: #333; }
+        .delete { background: #ff4d4d; color: white; }
+
+        .edit:hover { background: #e6b800; }
+        .delete:hover { background: #cc0000; }
+
+        /* Popup Styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            width: 340px;
+            text-align: center;
+            animation: fadeInPopup 0.4s ease-in-out;
+        }
+
+        .popup h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .popup input, .popup textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .popup button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .popup .add-btn { background: #007bff; color: white; }
+        .popup .cancel-btn { background: #ccc; color: #333; }
+
+        .popup .add-btn:hover { background: #0056b3; }
+        .popup .cancel-btn:hover { background: #999; }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInPopup {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Buttons -->
+<div class="nav-buttons">
+    <a href="/login" class="nav-button logout">🚪 Log Out</a>
+    <a href="/admin-dashboard" class="nav-button">⬅ Back</a>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+    <h2>Feeding Locations</h2>
+    <button class="nav-button add-button" onclick="showPopup()">➕ Add Location</button>
+    <ul>
+        <li th:each="location : ${locations}">
+            <strong>Address:</strong> <span th:text="${location.address}"></span><br>
+            <strong>Latitude:</strong><span th:text="${location.latitude}"></span><br>
+            <strong>Longitude:</strong><span th:text="${location.longitude}"></span><br>
+            <strong>Description:</strong> <span th:text="${location.description}"></span><br>
+            <strong>Last Fed:</strong> <span th:text="${location.lastFed}"></span><br>
+            <strong> Next Feeding Schedule:</strong> <span th:text="${location.nextFeedingSchedule}"></span><br>
+            <div class="buttons">
+                <a th:href="@{/feeding-locations/edit/{id}(id=${location.locationId})}" class="edit">✏ Edit</a>
+                <a th:href="@{/feeding-locations/delete/{id}(id=${location.locationId})}" class="delete" onclick="return confirm('Are you sure?');">🗑 Delete</a>
+            </div>
+            <hr>
+        </li>
+    </ul>
+</div>
+
+<!-- Popup Form -->
+<div id="popup" class="popup">
+    <h3>Add New Location</h3>
+    <form th:action="@{/feeding-locations/add}" method="post">
+        <label>Address:</label>
+        <input type="text" name="address" required />
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" required><br>
+
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" required><br>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+        <label for="lastfed">last fed:</label>
+        <input type="datetime-local" id="lastfed" name="lastfed" required><br>
+        <label>Next Feeding Schedule:</label>
+        <input type="datetime-local" name="nextFeedingSchedule" required />
+
+        <button type="submit" class="add-btn">Add Location</button>
+        <button type="button" class="cancel-btn" onclick="hidePopup()">Cancel</button>
+    </form>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById('popup').style.display = 'block';
+    }
+
+    function hidePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff4b5c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #ff1e3c;
+            transform: scale(1.05);
+        }
+
+        /* Heading */
+        h2 {
+            color: #fff;
+            font-size: 36px;
+            margin-bottom: 50px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Container for the cards */
+        .dashboard-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Individual Feature Card */
+        .feature-card {
+            width: 200px;
+            height: 250px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            text-decoration: none;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 1s ease-out;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Background Images */
+        .report-stray {
+            background-image: url('https://source.unsplash.com/200x250/?dog,stray');
+        }
+
+        .lost-found {
+            background-image: url('https://source.unsplash.com/200x250/?cat,pet');
+        }
+
+        .feeding-location {
+            background-image: url('https://source.unsplash.com/200x250/?dog,food');
+        }
+
+        .wildlife-report {
+            background-image: url('https://source.unsplash.com/200x250/?wildlife,animal');
+        }
+
+        .main-ngo-dashboard {
+            background-image: url('https://source.unsplash.com/200x250/?ngo,team');
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Logout button aligned to the top-right corner -->
+<button class="logout-btn" onclick="goback()">Log Out</button>
+
+<h2>Welcome to the Stray Animal Rescue System!</h2>
+
+<!-- Hidden field to store userType from session -->
+<input type="hidden" id="userType" th:value="${session.userType}" />
+
+<div class="dashboard-container">
+    <a href="/main-stray-animal" class="feature-card report-stray">Report Stray Animal</a>
+    <a href="/lost-found" class="feature-card lost-found">Lost & Found Pets</a>
+    <a href="/main-feeding-location" class="feature-card feeding-location">Community Feeding Locations</a>
+    <a href="/wildlife-report" class="feature-card wildlife-report">Wildlife Protection</a>
+
+    <!-- Main NGO Dashboard: Only visible if userType is NGO -->
+    <a href="/main-ngo-dashboard" id="main-ngo-dashboard" class="feature-card main-ngo-dashboard" style="display:none;">
+        Main NGO Dashboard
+    </a>
+    <a href="/admin-dashboard" id="admin-dashboard" class="feature-card" style="display:none">
+        Admin Dashboard
+    </a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const userType = document.getElementById('userType').value;
+        console.log("UserType from session:", userType); // Debugging in console
+        if (userType === 'NGO') {
+            document.getElementById('main-ngo-dashboard').style.display = 'flex';
+        }
+        if(userType === 'admin'){
+            document.getElementById('admin-dashboard').style.display='flex';
+        }
+    });
+
+    function goback(){
+        window.location.href='/login';
+    }
+</script>
+</body>
+</html>

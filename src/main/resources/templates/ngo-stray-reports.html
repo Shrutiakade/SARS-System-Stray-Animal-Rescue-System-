@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stray Animal Reports</title>
+    <style>
+        body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    color: #2c3e50;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.back-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+thead {
+    background: #34495e;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: rgba(52, 152, 219, 0.2);
+    transition: background 0.3s ease-in-out;
+}
+
+img {
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out;
+}
+
+img:hover {
+    transform: scale(1.1);
+}
+
+button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+    </style>
+
+</head>
+<body>
+<button class="back-button" onclick="window.location.href='/ngo-stray-animal-dashboard'">← Back</button>
+
+<h2>Stray Animal Reports</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Location</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="reportTableBody"></tbody>
+</table>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/api/stray-reports/all")
+            .then(response => response.json())
+            .then(data => {
+                let tableBody = document.getElementById("reportTableBody");
+                data.forEach(report => {
+                    let imageUrl = report.base64Image ? `data:image/jpeg;base64,${report.base64Image}` : "placeholder.jpg";
+
+                    let row = `<tr id="row-${report.id}">
+                        <td>${report.id}</td>
+                        <td>${report.location}</td>
+                        <td>${report.description}</td>
+                        <td>
+                            <img src="${imageUrl}" alt="Stray Animal" width="100" height="100" style="border-radius: 8px;">
+                        </td>
+                        <td>
+                            <select id="status-${report.id}" onchange="updateStatus(${report.id}, this.value)">
+                                <option value="PENDING" ${report.status === "PENDING" ? "selected" : ""}>PENDING</option>
+                                <option value="INVESTIGATING" ${report.status === "INVESTIGATING" ? "selected" : ""}>INVESTIGATING</option>
+                                <option value="RESOLVED" ${report.status === "RESOLVED" ? "selected" : ""}>RESOLVED</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="deleteReport(${report.id})">Delete</button>
+                        </td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    });
+
+    function updateStatus(reportId, newStatus) {
+        fetch(`/api/stray-reports/update-status/${reportId}?status=${newStatus}`, {
+            method: "PUT"
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert("Status updated successfully!");
+        })
+        .catch(error => console.error("Error updating status:", error));
+    }
+
+    function deleteReport(reportId) {
+        if (confirm("Are you sure you want to delete this report?")) {
+            fetch(`/api/stray-reports/delete/${reportId}`, {
+                method: "GET"
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById(`row-${reportId}`).remove();
+                alert("Report deleted successfully!");
+            })
+            .catch(error => console.error("Error deleting report:", error));
+        }
+    }
+</script>
+</body>
+</html>

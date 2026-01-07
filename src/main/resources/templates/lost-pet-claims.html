@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lost Pet Claims</title>
+    <style>
+        /* Overall Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3f4f6, #e3f2fd);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Buttons Container */
+        .top-buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 10px;
+            padding: 0 20px;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Back Button */
+        .back-btn {
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background-color: #e74c3c;
+            color: #ffffff;
+        }
+
+        /* Heading */
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 60px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #ecf0f1;
+        }
+
+        /* Image Styling */
+        img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Send Message Button */
+        button[type="submit"] {
+            background-color: #2ecc71;
+            color: #ffffff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            background-color: #e74c3c;
+            color: #ffffff;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="top-buttons">
+    <button class="back-btn" onclick="goback()">BACK</button>
+    <button class="logout-btn" onclick="logout()">LOG OUT</button>
+</div>
+
+<h2>Lost Pet Claims</h2>
+
+<table>
+    <tr>
+        <th>Pet Image</th>
+        <th>Pet ID</th>
+        <th>Pet Name</th>
+        <th>Pet Type</th>
+        <th>Pet Breed</th>
+        <th>Location</th>
+        <th>Contact Number</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="pet : ${lostPets}">
+        <td>
+            <img th:src="'data:image/jpeg;base64,' + ${pet.petImageBase64}" alt="Pet Image"/>
+        </td>
+        <td th:text="${pet.pet_id}"></td>
+        <td th:text="${pet.pet_name}"></td>
+        <td th:text="${pet.pet_type}"></td>
+        <td th:text="${pet.pet_breed}"></td>
+        <td th:text="${pet.lost_location}"></td>
+        <td th:text="${pet.user_contact_number}"></td>
+        <td>
+            <form action="/admin/send-message" method="post" style="display: inline;">
+                <input type="hidden" name="user_contact_number" th:value="${pet.user_contact_number}">
+                <button type="submit">Send Message</button>
+            </form>
+            <form action="/admin/delete-record" method="post" style="display: inline;">
+                <input type="hidden" name="pet_id" th:value="${pet.pet_id}">
+                <button type="submit" class="delete-btn">Delete Record</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<script>
+    function goback() {
+        window.location.href = '/admin-dashboard';
+    }
+
+    function logout() {
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

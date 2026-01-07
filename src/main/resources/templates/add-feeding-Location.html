@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Feeding Point</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        /* Form Container */
+        form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideIn 1s ease-out forwards;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        form:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
+        }
+
+        /* Heading */
+        h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Input Fields */
+        label {
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 14px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ff6a88;
+            box-shadow: 0 0 8px rgba(255, 106, 136, 0.3);
+            outline: none;
+        }
+
+        /* Buttons */
+        button {
+            background: #ff6a88;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff3e6b;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 62, 107, 0.2);
+        }
+
+        button:active {
+            background: #e0345d;
+            transform: scale(0.98);
+        }
+
+        /* Back Button - Adjusted */
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 10px 15px;
+            background-color: #007BFF; /* Changed to blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            form {
+                width: 90%;
+                padding: 30px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            input[type="text"],
+            input[type="datetime-local"],
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Back Button -->
+<button class="back-btn" onclick="goback();">Back</button>
+
+<h2>Add Feeding Location</h2>
+<form id="feeding-point-form" action="/add-feeding-location" method="post">
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="latitude" name="latitude" required><br>
+
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="longitude" name="longitude" required><br>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address"><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="lastfed">Last Fed:</label>
+    <input type="datetime-local" id="lastfed" name="lastfed" required><br>
+
+    <label for="nextFeedingSchedule">Next Feeding Schedule:</label>
+    <input type="datetime-local" id="nextFeedingSchedule" name="nextFeedingSchedule"><br>
+
+    <button type="submit" onclick="gotomain()">Add Location</button>
+</form>
+
+<script>
+    function gotomain() {
+        alert("Location added successfully!");
+        window.location.href = "/main-feeding-location";
+    }
+
+    function goback() {
+        window.location.href = "/main-feeding-location";
+    }
+</script>
+
+</body>
+</html>

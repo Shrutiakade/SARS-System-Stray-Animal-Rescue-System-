@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ngo-stray-dashboard</title>
+    <style>
+        /* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Back Button */
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #d43f51;
+    transform: scale(1.05);
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    display: inline-block;
+    background: #009688;
+    color: white;
+    padding: 12px 20px;
+    margin: 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+a:hover {
+    background: #00796b;
+    transform: translateY(-3px);
+}
+
+/* Fade Effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+<h1>STRAY RESCUE REPORTS </h1>
+<button onclick="window.location.href='/main-ngo-dashboard'">BACK</button>
+<a href="/ngo-stray-report">check all reports</a>
+<a href="/hotspot-location">See All Hotspot locations</a>
+
+</body>
+</html>

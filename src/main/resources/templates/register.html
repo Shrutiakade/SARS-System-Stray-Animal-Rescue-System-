@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Registration</title>
+    <style>
+        body {
+     background-image: url('https://i.pinimg.com/736x/f1/f8/c4/f1f8c47c4f7790c1b0c11723e1884861.jpg');
+     background-size: cover;
+     background-position: center;
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+
+ /* Title */
+ .title {
+     font-size: 36px;
+     font-weight: bold;
+     color: #ff3f6e;
+     margin-bottom: 20px;
+     text-align: center;
+     animation: fadeIn 1.5s ease-in-out;
+ }
+
+ /* Form Container */
+ form {
+     background: rgba(245, 245, 255, 0.5); /* Transparent background */
+     padding: 40px;
+     border-radius: 20px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+     width: 100%;
+     max-width: 400px;
+     animation: slideIn 1s ease-out;
+ }
+
+ /* Labels */
+ label {
+     font-weight: bold;
+     display: block;
+     margin-bottom: 4px;
+     color: #333;
+ }
+
+ /* Form Fields */
+ input[type="text"],
+ input[type="email"],
+ input[type="password"],
+ input[type="tel"],
+ select {
+     width: 100%;
+     padding: 12px;
+     margin-bottom: 15px;
+     border: 1px solid #ddd;
+     border-radius: 10px;
+     box-sizing: border-box;
+     font-size: 14px;
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+ }
+
+ input:focus,
+ select:focus {
+     outline: none;
+     transform: scale(1.03);
+     box-shadow: 0 0 10px rgba(255, 106, 136, 0.2);
+ }
+
+ /* Button */
+ button {
+     background: #ff6a88;
+     color: #fff;
+     border: none;
+     padding: 12px;
+     width: 100%;
+     border-radius: 10px;
+     font-size: 16px;
+     font-weight: bold;
+     cursor: pointer;
+     transition: background 0.3s ease, transform 0.2s ease;
+ }
+
+ button:hover {
+     background: #ff3f6e;
+     transform: translateY(-3px);
+ }
+
+ /* Link */
+ a {
+     color: #ff6a88;
+     text-decoration: none;
+     font-weight: bold;
+ }
+
+ a:hover {
+     text-decoration: underline;
+ }
+
+ /* Animations */
+ @keyframes slideIn {
+     from {
+         opacity: 0;
+         transform: translateY(-50px);
+     }
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+     }
+     to {
+         opacity: 1;
+     }
+ }
+    </style>
+</head>
+<body>
+<div class="title">🐾 Registration Form 🐾</div>
+
+<form action="/register" method="post">
+    <label>Username:</label>
+    <input type="text" name="username" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Contact Number:</label>
+    <input type="text" name="contactNumber" required pattern="\+91[0-9]{10}" title="Enter a valid 12-digit number with our indian extension" >
+
+    <label>User Type:</label>
+    <select name="userType" required>
+        <option value="COMMON_USER">Common User</option>
+        <option value="NGO">NGO</option>
+        <option value="ADMIN">Admin</option>
+    </select>
+
+    <label>Password:</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Register</button>
+    <p>Already registered? <a href="/login">Login here</a></p>
+</form>
+</body>
+</html>

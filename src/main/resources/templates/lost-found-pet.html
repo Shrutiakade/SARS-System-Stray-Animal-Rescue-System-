@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Found Pet</title>
+    <style>
+        /* Page Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e3eaf4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Title Styles */
+        h2 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: #ffffff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .back-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Form Styles */
+        form {
+            background: #ffffff;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            height: auto; /* Reduced height */
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        form:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        input[type="text"],
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px; /* Reduced margin */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        button[type="submit"]:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Back Button -->
+<button class="back-btn" onclick="goBack()">Back</button>
+
+<h2>Report Found Pet</h2>
+<form action="/lost-found-pet/submit" method="post" enctype="multipart/form-data">
+    <label>Pet Name:</label>
+    <input type="text" name="pet_name" required>
+
+    <label>Pet Type:</label>
+    <input type="text" name="pet_type" required>
+
+    <label>Pet Breed:</label>
+    <input type="text" name="pet_breed" required>
+
+    <label>Status:</label>
+    <select name="status" required>
+        <option value="lost">Lost</option>
+        <option value="found">Found</option>
+    </select>
+
+    <label>Location:</label>
+    <input type="text" name="location" required>
+
+    <label>Contact Number:</label>
+    <input type="text" name="user_contact_number" required>
+
+    <label>Upload Pet Photo:</label>
+    <input type="file" name="pet_image" accept="image/*" required>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    function goBack() {
+        window.location.href = '/lost-found';
+    }
+</script>
+</body>
+</html>

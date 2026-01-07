@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Found Pets</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3f4f6, #e3eaf4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideIn 1s ease-out;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            background: #4CAF50;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        td {
+            background: #f9f9f9;
+        }
+
+        tr:nth-child(even) td {
+            background: #eef2f3;
+        }
+
+        tr:hover td {
+            background: #d4edda;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        img {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        span {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Button Styles */
+        button {
+            background: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<button class="back-btn" onclick="goback()">← Back</button>
+<h2>Found Pets</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Pet Id</th>
+        <th>Pet Image</th>
+        <th>Pet Name</th>
+        <th>Pet Type</th>
+        <th>Pet Breed</th>
+        <th>Found Location</th>
+        <th>Contact Number</th>
+        <th>Send Message to Admin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf syntax -->
+    <tr th:each="pet : ${foundPets}">
+        <td th:text="${pet.pet_id}"></td>
+        <td>
+            <img th:if="${pet.petImageBase64}" th:src="@{'data:image/jpeg;base64,' + ${pet.petImageBase64}}" alt="Pet Image" width="100" height="100">
+            <span th:unless="${pet.petImageBase64}">No Image Available</span>
+        </td>
+        <td th:text="${pet.pet_name}"></td>
+        <td th:text="${pet.pet_type}"></td>
+        <td th:text="${pet.pet_breed}"></td>
+        <td th:text="${pet.found_location}"></td>
+        <td th:text="${pet.user_contact_number}"></td>
+        <td>
+            <form action="/notify-admin" method="post">
+                <input type="hidden" name="pet_id" th:value="${pet.pet_id}" />
+                <input type="hidden" name="pet_name" th:value="${pet.pet_name}" />
+                <input type="hidden" name="found_location" th:value="${pet.found_location}" />
+                <input type="hidden" name="user_contact" th:value="${pet.user_contact_number}" />
+                <input type="hidden" name="status" th:value="${pet.status}" />
+                <button type="submit">Send Message to Admin</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    function goback(){
+        window.location.href='/lost-found';
+    }
+</script>
+</html>

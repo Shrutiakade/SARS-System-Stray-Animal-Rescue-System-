@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stray Animal Hotspots</title>
+  <style>
+    body {
+      background: #f8f9fa;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+    h1 { color: #333; font-size: 28px; }
+    p { color: #666; font-size: 16px; }
+    #map { height: 400px; margin: 20px auto; border-radius: 10px; }
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      color: white;
+      background: #ff6b6b;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #ff3b3b; transform: scale(1.05); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+  <link rel="stylesheet" href="/leaflet.css" />
+  <script src="/leaflet.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+  <h1>Stray Animal Hotspots</h1>
+  <p>Areas with the highest number of stray animal reports</p>
+  <div id="map"></div>
+  <a href="/main-stray-animal" class="btn">Back</a>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var map = L.map('map').setView([19.076, 72.8777], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    fetch("/api/stray-reports")
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data); // Debugging: Check what API returns
+
+            if (!Array.isArray(data) || data.length === 0) {
+                console.error("Invalid API response or no data available.");
+                return;
+            }
+
+            data.forEach(report => {
+                // Check if required fields exist
+                if (!report.latitude || !report.longitude) {
+                    console.warn("Missing coordinates for:", report);
+                    return;
+                }
+
+                let marker = L.marker([report.latitude, report.longitude]).addTo(map);
+                marker.bindPopup(`
+                    <b>${report.location || "Unknown Location"}</b><br>
+                    <b>Reports:</b> ${report.reportedAt ? new Date(report.reportedAt).toLocaleString() : "N/A"}<br>
+                    <b>Description:</b> ${report.description || "No description available"}
+                `);
+            });
+        })
+        .catch(error => console.error("Error loading reports:", error));
+});
+</script>
+
+</body>
+</html>

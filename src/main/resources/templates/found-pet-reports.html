@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lost Pet Claims</title>
+  <style>
+    /* Global Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    /* Header Styles */
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+
+    .header button {
+        padding: 8px 15px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .header button:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+    }
+
+    h2 {
+        color: #333;
+        font-size: 2rem;
+        margin: 20px 0;
+    }
+
+    /* Table Styles */
+    table {
+        width: 90%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f7f7f7;
+        color: #555;
+        font-weight: bold;
+    }
+
+    td {
+        color: #333;
+    }
+
+    img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    /* Button Styles */
+    button {
+        padding: 8px 12px;
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #27ae60;
+        transform: scale(1.05);
+    }
+
+    .delete-btn {
+        background-color: #e74c3c;
+    }
+
+    .delete-btn:hover {
+        background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <button onclick="goBack()">← Back</button>
+  <button onclick="logout()">Logout →</button>
+</div>
+
+<h2>Lost Pet Claims</h2>
+
+<table>
+  <tr>
+    <th>Pet Image</th>
+    <th>Pet ID</th>
+    <th>Pet Name</th>
+    <th>Pet Type</th>
+    <th>Pet Breed</th>
+    <th>Location</th>
+    <th>Contact Number</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="pet : ${foundPets}">
+    <td>
+      <img th:src="'data:image/jpeg;base64,' + ${pet.petImageBase64}" alt="Pet Image"/>
+    </td>
+    <td th:text="${pet.pet_id}"></td>
+    <td th:text="${pet.pet_name}"></td>
+    <td th:text="${pet.pet_type}"></td>
+    <td th:text="${pet.pet_breed}"></td>
+    <td th:text="${pet.found_location}"></td>
+    <td th:text="${pet.user_contact_number}"></td>
+    <td>
+      <form action="/admin/send-message-found" method="post" style="display: inline;">
+        <input type="hidden" name="user_contact_number" th:value="${pet.user_contact_number}">
+        <button type="submit">Send Message</button>
+      </form>
+      <form action="/admin/delete-found-record" method="post" style="display: inline;">
+        <input type="hidden" name="pet_id" th:value="${pet.pet_id}">
+        <button type="submit" class="delete-btn">Delete Record</button>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<script>
+  function goBack() {
+    window.location.href = "/admin-dashboard";
+  }
+
+  function logout() {
+    window.location.href = "/login";
+  }
+</script>
+</body>
+</html>

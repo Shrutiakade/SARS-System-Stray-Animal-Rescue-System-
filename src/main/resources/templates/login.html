@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User Login</title>
+  <style>
+    /* Global Styles */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+
+    /* Title */
+    .title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 20px;
+        text-align: center;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Form Container */
+    form {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        animation: slideIn 1s ease-out;
+    }
+
+    /* Labels */
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+        color: #333;
+    }
+
+    /* Form Fields */
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-sizing: border-box;
+        font-size: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus {
+        outline: none;
+        transform: scale(1.03);
+        box-shadow: 0 0 10px rgba(142, 197, 252, 0.3);
+    }
+
+    /* Button */
+    button {
+        background: #8EC5FC;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background: #5a9efc;
+        transform: translateY(-3px);
+    }
+
+    /* Messages */
+    p {
+        text-align: center;
+    }
+
+    p[style*="color: red"] {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    p[style*="color: green"] {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Animations */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(-5px);
+        }
+        50% {
+            transform: translateX(5px);
+        }
+        75% {
+            transform: translateX(-5px);
+        }
+    }
+  </style>
+</head>
+<body>
+<div class="title">🔐 User Login 🔐</div>
+
+
+
+<form action="/login" method="post">
+  <label>Email:</label>
+  <input type="email" name="email" required>
+
+  <label>Password:</label>
+  <input type="password" name="password" required>
+
+  <button type="submit">Login</button>
+  <p>New User Registerd? <a href="/register">Register here</a></p>
+</form>
+</body>
+</html>

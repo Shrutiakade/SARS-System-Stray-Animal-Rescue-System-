@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Wildlife Report</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Form Container */
+    .form-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Heading */
+    h2 {
+      text-align: center;
+      color: #333;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      animation: slideDown 1s ease-in-out;
+    }
+
+    /* Labels */
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    /* Form Fields */
+    input[type="text"],
+    textarea,
+    input[type="file"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(33, 147, 176, 0.2);
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    /* Button */
+    button {
+      background: #2193b0;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: #176d81;
+      transform: translateY(-3px);
+    }
+
+    /* Message Styles */
+    .message {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-back {
+  position: fixed; /* Ensure it stays at the top-left corner */
+  top: 15px;
+  left: 15px;
+  background: #f44336;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  border-radius: 50%;
+  font-size: 18px;
+  box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background: #d32f2f;
+  transform: scale(1.1);
+}
+
+
+  </style>
+</head>
+<body>
+<button class="btn-back" onclick="goback()">Back</button>
+<div class="form-container">
+  <h2>Report Wildlife Incident</h2>
+
+  <!-- Display success or error messages -->
+  <div th:if="${message}" class="message" th:text="${message}"></div>
+  <div th:if="${error}" class="error" th:text="${error}"></div>
+
+  <form action="/submitWildlifeReport" method="post" enctype="multipart/form-data">
+    <label for="email">Your Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required>
+    <label for="reportedAt">ReportedAt:</label>
+    <input type="datetime-local" id="reportedAt" name="reportedAt" required pattern="yyyy-MM-dd'T'HH:mm:ss" title="Enter Datetime in this form yyyy-MM-dd'T'HH:mm:ss"  >
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="photo">Upload Photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+
+    <button type="submit" onclick="message()">Submit Report</button>
+  </form>
+</div>
+<script>
+  function goback(){
+  window.location.href="/dashboard";
+  }
+  function message(){
+  alert("wildreport submitted successfully!");
+  }
+</script>
+</body>
+</html>

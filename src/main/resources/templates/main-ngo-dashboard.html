@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main NGO Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff99ac);
+            overflow: hidden;
+            position: relative;
+        }
+
+        h2 {
+            color: #fff;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .dashboard-container {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .feature-card {
+            width: 220px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ff6a88;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            background: #ff99ac;
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #ff4d4d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .logout-button:hover {
+            background: #ff1a1a;
+            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <script>
+        function logout() {
+            window.location.href = '/login';
+        }
+    </script>
+</head>
+<body>
+<button class="logout-button" onclick="logout()">Logout</button>
+<h2>Main NGO Dashboard</h2>
+<div class="dashboard-container">
+    <a href="/ngo-dashboard" class="feature-card">Wildlife Protection</a>
+    <a href="/ngo-stray-animal-dashboard" class="feature-card">Stray Rescue Report</a>
+
+</div>
+</body>
+</html>

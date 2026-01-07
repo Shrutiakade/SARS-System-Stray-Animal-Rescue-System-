@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeding Location Dashboard</title>
+    <style>
+        /* Global Styles */
+ body {
+     font-family: 'Poppins', sans-serif;
+     background: linear-gradient(135deg, #74ebd5, #acb6e5);
+     margin: 0;
+     padding: 0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
+ }
+
+ /* Dashboard Container */
+ .dashboard-container {
+     background: #ffffff;
+     padding: 50px;
+     border-radius: 20px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+     width: 420px;
+     text-align: center;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+ }
+
+ .dashboard-container:hover {
+     transform: scale(1.02);
+     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+ }
+
+ /* Heading */
+ h2 {
+     font-size: 28px;
+     color: #333;
+     margin-bottom: 30px;
+     letter-spacing: 1px;
+ }
+
+ /* Dashboard Buttons */
+ .dashboard-button {
+     display: block;
+     width: 100%;
+     padding: 14px;
+     margin: 12px 0;
+     background: #5cb85c;
+     color: #ffffff;
+     border: none;
+     border-radius: 25px;
+     font-size: 18px;
+     font-weight: 500;
+     text-decoration: none;
+     transition: background 0.3s ease, transform 0.2s ease;
+ }
+
+ .dashboard-button:hover {
+     background: #4cae4c;
+     transform: scale(1.05);
+ }
+
+ .dashboard-button:active {
+     background: #398439;
+ }
+
+ /* Responsive Design */
+ @media (max-width: 480px) {
+     .dashboard-container {
+         width: 90%;
+         padding: 30px;
+     }
+
+     h2 {
+         font-size: 24px;
+     }
+
+     .dashboard-button {
+         font-size: 16px;
+     }
+ }
+        .btn-back {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #f44336;
+      color: white;
+      padding: 10px 16px;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 18px;
+      box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+  }
+
+    </style>
+</head>
+<body>
+<button class="btn-back" onclick="goback()">Back</button>
+<div class="dashboard-container">
+    <h2>Feeding Location Management</h2>
+    <a href="/feeding-locations-list" class="dashboard-button">View Feeding Locations</a>
+    <a href="/add-feeding-location" class="dashboard-button">Add New Feeding Location</a>
+    <a href="/feeding-locations-map" class="dashboard-button">View Locations on Map</a>
+</div>
+<script>
+    function goback(){
+    window.location.href="/dashboard";
+    }
+</script>
+</body>
+</html>

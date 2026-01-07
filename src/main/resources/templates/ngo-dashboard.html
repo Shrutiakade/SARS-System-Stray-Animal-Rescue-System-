@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>NGO Wildlife Reports Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .container {
+      width: 90%;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.8s ease-in-out;
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      color: #d84315;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: #e64a19;
+      transform: scale(1.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ff7043;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #ffe0b2;
+    }
+
+    select, button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select {
+      background-color: #ffccbc;
+    }
+
+    button {
+      background-color: #ff5722;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <button class="back-btn" onclick="window.location.href='/main-ngo-dashboard'">Back</button>
+  <h2>Wildlife Reports</h2>
+  <div th:if="${noReportsMessage}">
+    <p th:text="${noReportsMessage}"></p>
+  </div>
+  <table th:if="${reports}">
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Reported At</th>
+      <th>Action</th>
+    </tr>
+    <tr th:each="report : ${reports}">
+      <td th:text="${report.id}"></td>
+      <td th:text="${report.location}"></td>
+      <td th:text="${report.description}"></td>
+      <td th:text="${report.status}"></td>
+      <td th:text="${report.reportedAt}"></td>
+      <td>
+        <form method="post" action="/updateReportStatus">
+          <input type="hidden" name="reportId" th:value="${report.id}" />
+          <select name="status">
+            <option value="PENDING" th:selected="${report.status == 'PENDING'}">Pending</option>
+            <option value="INVESTIGATING" th:selected="${report.status == 'INVESTIGATING'}">Investigating</option>
+            <option value="RESOLVED" th:selected="${report.status == 'RESOLVED'}">Resolved</option>
+          </select>
+          <button type="submit">Update</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

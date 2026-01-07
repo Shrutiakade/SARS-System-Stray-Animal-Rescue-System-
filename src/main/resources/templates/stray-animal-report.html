@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Stray Animal</title>
+  <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #f8ffae, #43c6ac);
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 1s ease-in;
+}
+
+h2 {
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: auto;
+    animation: fadeUp 0.8s ease-in-out;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #2c3e50;
+    box-shadow: 0px 0px 5px rgba(44, 62, 80, 0.5);
+}
+
+button {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #34495e;
+    transform: scale(1.05);
+}
+
+#map {
+    height: 300px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+#camera {
+    width: 100%;
+    max-height: 250px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+}
+
+#snapshotCanvas {
+    display: none;
+    width: 100%;
+    max-height: 250px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.back-button {
+    background: #e74c3c;
+    margin-top: 10px;
+}
+
+.back-button:hover {
+    background: #c0392b;
+}
+  </style>
+  <link rel="stylesheet" href="/leaflet.css">
+  <script src="/leaflet.js"></script>
+</head>
+<body>
+
+<h2>Report a Stray Animal</h2>
+
+<form id="reportForm">
+  <label for="image">Upload Image:</label>
+  <input type="file" id="image" accept="image/*">
+
+  <p>Or Capture Live:</p>
+  <button id="toggleCamera" type="button">Switch Camera</button>
+  <button id="captureButton" type="button">Open Camera</button>
+  <button id="takePhoto" type="button" style="display:none;">Capture Photo</button>
+
+  <video id="camera" autoplay></video>
+  <canvas id="snapshotCanvas"></canvas>
+
+  <label>Detected Location:</label>
+  <div id="map"></div>
+  <input type="hidden" id="latitude" name="latitude">
+  <input type="hidden" id="longitude" name="longitude">
+
+  <!-- New field for user-entered location -->
+  <label for="location">Enter Location:</label>
+  <input type="text" id="location" name="location" placeholder="Enter location  manually">
+
+  <label for="description">Description:</label>
+  <textarea id="description" required></textarea>
+
+  <button type="submit">Submit Report</button>
+  <button type="button" class="back-button" onclick="window.location.href='/main-stray-animal'">Back</button>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      let map = L.map('map').setView([19.076, 72.8777], 10);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+      navigator.geolocation.getCurrentPosition(position => {
+          let lat = position.coords.latitude;
+          let lng = position.coords.longitude;
+          document.getElementById('latitude').value = lat;
+          document.getElementById('longitude').value = lng;
+          L.marker([lat, lng]).addTo(map).bindPopup("Your Location").openPopup();
+          map.setView([lat, lng], 14);
+      });
+
+      let video = document.getElementById('camera');
+      let canvas = document.getElementById('snapshotCanvas');
+      let stream = null;
+      let facingMode = "environment";
+
+      document.getElementById("captureButton").addEventListener("click", function() {
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: facingMode } })
+              .then(s => {
+                  stream = s;
+                  video.srcObject = stream;
+                  document.getElementById("takePhoto").style.display = "inline-block";
+              })
+              .catch(err => console.error("Camera Access Denied", err));
+      });
+
+      document.getElementById("toggleCamera").addEventListener("click", function() {
+          facingMode = (facingMode === "user") ? "environment" : "user";
+          if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+          }
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: facingMode } })
+              .then(s => {
+                  stream = s;
+                  video.srcObject = stream;
+              })
+              .catch(err => console.error("Camera Access Denied", err));
+      });
+
+      document.getElementById("takePhoto").addEventListener("click", function() {
+          let context = canvas.getContext('2d');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          video.style.display = "none";
+          canvas.style.display = "block";
+          document.getElementById("takePhoto").style.display = "none";
+          if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+          }
+      });
+
+      document.getElementById('reportForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          let formData = new FormData();
+          let imageFile = document.getElementById('image').files[0];
+          let description = document.getElementById('description').value;
+          let latitude = document.getElementById('latitude').value;
+          let longitude = document.getElementById('longitude').value;
+          let manualLocation = document.getElementById('location').value; // Get manual location
+
+          if (canvas.style.display === "block") {
+              canvas.toBlob(blob => {
+                  formData.append("image", blob, "captured.png");
+              });
+          } else {
+              formData.append("image", imageFile);
+          }
+
+          formData.append("description", description);
+          formData.append("latitude", latitude);
+          formData.append("longitude", longitude);
+          formData.append("location", manualLocation); // Append manual location
+
+          fetch("/api/stray-reports/submit", {
+              method: "POST",
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => alert("Report Submitted Successfully!"))
+          .catch(error => alert("Error submitting report!"));
+      });
+  });
+</script>
+
+</body>
+</html>
